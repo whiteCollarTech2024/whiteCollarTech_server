@@ -47,7 +47,18 @@ module.exports = () => {
       allowNull: false,
     },
 
+    // job category enum :- Sales, Development, Design
+
+    jobCategory: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+
     title: {
+      type: Sequelize.STRING,
+    },
+
+    city: {
       type: Sequelize.STRING,
     },
   });

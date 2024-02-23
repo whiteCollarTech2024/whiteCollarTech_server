@@ -11,6 +11,8 @@ module.exports = {
         minYearExperience = "",
         maxYearExperience = "",
         jobType = "",
+        city = "",
+        jobCategory = "",
       } = serviceInputParams;
 
       if (
@@ -20,7 +22,9 @@ module.exports = {
         !qualifications ||
         !minYearExperience ||
         !maxYearExperience ||
-        !jobType
+        !jobType ||
+        !city ||
+        !jobCategory
       ) {
         return {
           status: 400,
@@ -35,6 +39,8 @@ module.exports = {
           minYearExperience,
           maxYearExperience,
           jobType,
+          city,
+          jobCategory,
         });
 
         return { status: 201, data: newJob };
@@ -50,6 +56,69 @@ module.exports = {
 
   editJobService: async (serviceInputParams) => {
     try {
+      const {
+        id,
+        title,
+        jobDescription,
+        rolesAndResponsibilities,
+        qualifications,
+        minYearExperience,
+        maxYearExperience,
+        jobType,
+        city,
+        jobCategory,
+      } = serviceInputParams;
+
+      // Check if all required fields are provided
+      if (
+        !id ||
+        !title ||
+        !jobDescription ||
+        !rolesAndResponsibilities ||
+        !qualifications ||
+        minYearExperience === undefined ||
+        maxYearExperience === undefined ||
+        !jobType ||
+        !city ||
+        !jobCategory
+      ) {
+        return {
+          status: 400,
+          message: "Missing information",
+        };
+      }
+
+      // Update the job in the database
+      const [updatedJobCount] = await JobModel.update(
+        {
+          title,
+          jobDescription,
+          rolesAndResponsibilities,
+          qualifications,
+          minYearExperience,
+          maxYearExperience,
+          jobType,
+          city,
+          jobCategory,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      if (updatedJobCount === 0) {
+        return {
+          status: 404,
+          message: "Job not found",
+        };
+      }
+
+      return {
+        status: 200,
+        message: "Job updated successfully",
+      };
     } catch (serviceError) {
       console.log(
         "[DEBUG] Job Service at editJobService Error :-",
@@ -61,6 +130,10 @@ module.exports = {
 
   deleteJobService: async (serviceInputParams) => {
     try {
+      const { id } = serviceInputParams;
+      await JobModel.destroy({ where: { id } });
+
+      return { status: 200, message: "Job Deleted" };
     } catch (serviceError) {
       console.log(
         "[DEBUG] Job Service at deleteJobService Error :-",
@@ -72,14 +145,27 @@ module.exports = {
 
   getAllJobsService: async (serviceInputParams) => {
     try {
-      console.log("serviceInputParams", serviceInputParams);
       const { userId } = serviceInputParams;
       const whereClause = { userId };
 
-      const jobsData = await JobModel.findAll({
-        whereClause,
-        includes: "user",
-      });
+      const jobsData = await JobModel.findAll({ whereClause });
+
+      return {
+        status: 200,
+        data: jobsData,
+      };
+    } catch (serviceError) {
+      console.log(
+        "[DEBUG] Job Service at getAllJobsService Error :-",
+        serviceError
+      );
+      return { status: 500, message: "An error occurred" };
+    }
+  },
+
+  getAllCareersService: async (serviceInputParams) => {
+    try {
+      const jobsData = await JobModel.findAll();
 
       return {
         status: 200,
@@ -96,6 +182,33 @@ module.exports = {
 
   getJobByIdService: async (serviceInputParams) => {
     try {
+      const { id, userId } = serviceInputParams;
+      const whereClause = { userId, id };
+      const jobData = await JobModel.findOne(whereClause);
+
+      return {
+        status: 200,
+        data: jobData || {},
+      };
+    } catch (serviceError) {
+      console.log(
+        "[DEBUG] Job Service at getJobByIdService Error :-",
+        serviceError
+      );
+      return { status: 500, message: "An error occurred" };
+    }
+  },
+
+  getCareerByIdService: async (serviceInputParams) => {
+    try {
+      const { id } = serviceInputParams;
+      const whereClause = { id };
+      const jobData = await JobModel.findOne(whereClause);
+
+      return {
+        status: 200,
+        data: jobData || {},
+      };
     } catch (serviceError) {
       console.log(
         "[DEBUG] Job Service at getJobByIdService Error :-",

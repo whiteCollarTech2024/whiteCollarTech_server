@@ -4,6 +4,8 @@ const {
   deleteJobService,
   getAllJobsService,
   getJobByIdService,
+  getAllCareersService,
+  getCareerByIdService,
 } = require("./job.services");
 
 module.exports = {
@@ -27,7 +29,12 @@ module.exports = {
 
   editJob: async (req, res) => {
     try {
-      const response = await editJobService({ ...req.body, ...req.params });
+      const response = await editJobService({
+        ...req.body,
+        ...req.params,
+        ...req.query,
+        userId: req.userId,
+      });
 
       if (response.status === 400) {
         throw new Error(response.message);
@@ -85,9 +92,58 @@ module.exports = {
     }
   },
 
+  getAllCareers: async (req, res) => {
+    try {
+      const response = await getAllCareersService({
+        ...req.body,
+        userId: req.userId,
+      });
+
+      if (response.status === 400) {
+        throw new Error(response.message);
+      }
+
+      res.send(response);
+    } catch (controllerError) {
+      console.log(
+        "[DEBUG] Job Controller at getAllJobs Error :-",
+        controllerError
+      );
+
+      res.status(400).send({ message: controllerError.message });
+    }
+  },
+
   getJobById: async (req, res) => {
     try {
-      const response = await getJobByIdService({ ...req.body });
+      const response = await getJobByIdService({
+        ...req.query,
+        ...req.params,
+        userId: req.userId,
+      });
+
+      if (response.status === 400) {
+        throw new Error(response.message);
+      }
+
+      res.send(response);
+    } catch (controllerError) {
+      console.log(
+        "[DEBUG] Job Controller at getJobById Error :-",
+        controllerError
+      );
+
+      res.status(400).send({ message: controllerError.message });
+    }
+  },
+
+  getCareerById: async (req, res) => {
+    try {
+      const response = await getCareerByIdService({
+        ...req.query,
+        ...req.params,
+        userId: req.userId,
+      });
 
       if (response.status === 400) {
         throw new Error(response.message);
