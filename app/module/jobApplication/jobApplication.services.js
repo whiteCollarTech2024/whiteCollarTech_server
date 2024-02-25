@@ -21,33 +21,48 @@ module.exports = {
         };
       }
 
-      // Create a new blob in the bucket and upload the file data.
-      const blob = bucket.file(resumeFile.originalname);
+      // Step  1: Create a job application record and retrieve its ID
+      const jobApplication = await JobApplicationModel.create({
+        candidateEmail,
+        candidateFirstName,
+        candidateLastName,
+        candidateNumber,
+        jobId,
+        // Initially, set candidateResumeFilePath to null or an empty string
+        candidateResumeFilePath: "",
+      });
+
+      const jobApplicationId = jobApplication.id;
+
+      // Step  2: Use the job application ID to name the file in Firebase Storage
+      const blob = bucket.file(
+        `${jobApplicationId}/${resumeFile.originalname}`
+      );
       const blobStream = blob.createWriteStream();
 
       blobStream.on("finish", async () => {
-        const uploadedUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-
-        const [url] = await blob.getSignedUrl({
+        // Generate a download URL for the uploaded file
+        const [downloadUrl] = await blob.getSignedUrl({
           action: "read",
           expires: "03-17-3025",
         });
 
-        await JobApplicationModel.create({
-          candidateEmail,
-          candidateFirstName,
-          candidateLastName,
-          candidateNumber,
-          jobId,
-          candidateResumeFilePath: url,
-        });
+        // Step   3: Update the candidateResumeFilePath of the job application record with the download URL
+        await JobApplicationModel.update(
+          {
+            candidateResumeFilePath: downloadUrl,
+          },
+          {
+            where: { id: jobApplicationId },
+          }
+        );
+
+        return {
+          message: "Job application sent successfully",
+        };
       });
 
       blobStream.end(resumeFile.buffer);
-
-      return {
-        message: "Job application sent successfully",
-      };
     } catch (serviceError) {
       console.log(
         "[DEBUG] Job Service at sendJobApplicationService Error :-",
@@ -81,8 +96,29 @@ module.exports = {
     try {
       const { applicationId } = serviceInputParams;
       const whereClause = { id: applicationId };
+
+      // Step  1: Retrieve the job application record
+      const jobApplication = await JobApplicationModel.findOne({
+        where: whereClause,
+      });
+
+      if (!jobApplication) {
+        return { message: "Job application not found" };
+      }
+
+      // Step  2: Extract the folder name from the candidateResumeFilePath
+      const folderName = jobApplication.candidateResumeFilePath.split("/")[4];
+
+      // Step  3: Delete the folder and its contents from Firebase Storage
+      const folderPath = `${folderName}/`;
+      const [files] = await bucket.getFiles({ prefix: folderPath });
+
+      await Promise.all(files.map((file) => file.delete()));
+
+      // Step  4: Destroy the job application record
       await JobApplicationModel.destroy({ where: whereClause });
-      return { message: "Candidate application rejected" };
+
+      return { message: "Candidate application rejected and files deleted" };
     } catch (serviceError) {
       console.log(
         "[DEBUG] Job Service at rejectJobApplication Error :-",
