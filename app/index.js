@@ -10,7 +10,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://white-collar-tech-three.vercel.appr",
+      "https://white-collar-tech-staging.vercel.app",
     ],
   })
 );
