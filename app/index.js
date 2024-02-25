@@ -20,13 +20,10 @@ async function startServer() {
 
     // Create database if it doesn't exist
 
-    const dbName = config.database.database;
+    const connectionString = config.database.connectionString;
 
     const client = new pg.Pool({
-      user: config.database.username,
-      password: config.database.password,
-      host: config.database.host,
-      database: "postgres",
+      connectionString: connectionString,
     });
 
     await client.connect();
