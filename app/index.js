@@ -1,28 +1,35 @@
-require("dotenv-extended").config({ path: "./.env.development" });
+require("dotenv-extended").config({ path: `./.env.${process.env.NODE_ENV}` });
+const pg = require("pg");
 const express = require("express");
-const app = express();
 const fs = require("fs");
 const path = require("path");
-const registerRoutes = require("./registerRoutes");
-const cors = require("cors");
 const config = require("./config/config");
+const app = express();
+const registerRoutes = require("./registerRoutes");
+const sequelize = require("./db");
+const cors = require("cors");
+const constants = require("./constants");
 app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://white-collar-tech-staging.vercel.app",
-    ],
-  })
+  cors({ origin: [constants.localFrontEndHost, constants.stagingFrontEndHost] })
 );
 app.use(express.json());
-const sequelize = require("./db");
 
 async function startServer() {
   try {
     console.log("[DEBUG] Establishing DB connection");
-    sequelize
-      .sync({ force: false })
-      .then(() => console.log("[DEBUG] Established DB connection"));
+
+    // Create database if it doesn't exist
+
+    const dbName = config.database.database;
+
+    const client = new pg.Pool({
+      user: config.database.username,
+      password: config.database.password,
+      host: config.database.host,
+      database: "postgres",
+    });
+
+    await client.connect();
 
     const modelsDir = path.join(__dirname, "model");
 
@@ -33,12 +40,14 @@ async function startServer() {
       }
     });
 
-    registerRoutes(app);
+    await sequelize.authenticate();
+    console.log("[DEBUG] Established DB connection");
 
-    app.use((err, req, res, next) => {
-      console.error(err.stack);
-      res.status(err.status || 500).send({ message: err.message });
-    });
+    // Synchronize models
+    await sequelize.sync();
+
+    // Register routes
+    registerRoutes(app);
 
     app.listen(config.port, () => {
       console.log(`Server listening on port ${config.port}`);

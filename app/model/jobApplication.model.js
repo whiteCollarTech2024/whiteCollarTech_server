@@ -37,7 +37,7 @@ module.exports = () => {
     },
 
     candidateResumeFilePath: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
   });
