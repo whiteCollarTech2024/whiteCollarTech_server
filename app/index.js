@@ -6,7 +6,14 @@ const path = require("path");
 const registerRoutes = require("./registerRoutes");
 const cors = require("cors");
 const config = require("./config/config");
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://white-collar-tech-three.vercel.appr",
+    ],
+  })
+);
 app.use(express.json());
 const sequelize = require("./db");
 
