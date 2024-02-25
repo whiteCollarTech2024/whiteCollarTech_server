@@ -95,7 +95,7 @@ module.exports = {
   getAllCareers: async (req, res) => {
     try {
       const response = await getAllCareersService({
-        ...req.body,
+        ...req.query,
         userId: req.userId,
       });
 

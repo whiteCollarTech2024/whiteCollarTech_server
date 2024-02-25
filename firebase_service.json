@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "white-collar-tech",
+  "private_key_id": "3cc2365bbaeebfad1a5eea7f500fd491f69c3d97",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6QxC7b4M9/iYW\nV5X/z+fwVNlODTW6Y2B0CXIQTc/WC4qVvuOwldvLtiFF3JkjUQOkN50ErwRfVEOB\nN67oEbVflG8ues1KXmekjF3fYnKBFiyiNJsHqr1UMdcIW60T62atjMm1Ad5yN1ci\nPznJS8E37V85goAPlae3cgH7cBTUzV2nyHAneYD95lMDisZWVaX6ibxkHmcSn/gc\nq8/QvBB6WLfzd+p1PhzOF4chci+KMLJiozPvCOlerjDMTC1hPrM4SsFKYy2amm4x\nr5r4GPySvh2EHvhwJ0RyBDUrHYxGag3mYBYsDXObX62h/HlQE+INa/Ar7bN6ixG/\nmMxWmRgTAgMBAAECggEAOYLWqkEqwVv1T6W4k3WS9IKGXFK42bWwhPObrAwSldEX\nd9gqfo4vAQ3Z5TPRdvWfTbe8PEN78qFWfJIAZ/h7y6jN0YiqVYGjt8t9eqlvmIsL\nugPLMIlYDySadCK2ZLWlDQYxC7opgJO0zEbAZXaGEOoyolO4jddUI1DI6uV3ESNW\nyjVUpoRYUq97pE1sGUflHdQyKIZ3KIoZFPnISQHADgu3NGYKhh+q3C9Q/Df+cmXu\nFmKoqUK2JRlNEdC91PgsD7zMfQWsBOKFiM5Pml56XrWU25LgPJ3QQzo80of0TRoy\nBVCKNAVUkSOOt/K+IUxSoFhFut1ddJtv4d1qdOSTXQKBgQDqr5wKnyNoYwefhTpY\nQocRcSGvtpZKdI3FZVAldz1/Tecvyl5CR+cocAS3nPmLI8TNeWDxsdGfmf8jakdx\nksUlxaN0L+cEz3ohXF84gC6gXRjBd8LcVvSqi4sVDoyUsb1mKWUiwz128zS+QIXA\nIZ95uskLB36JGUN40cn69mlqHQKBgQDLLZwgQebYTkH52tfQ98qT1O98Ppl6tZ/C\n+zuKiO9x9bL0GqMRL1epyQENgDIKfsuUmTGSSiDCAy/ZrtaEfLroSi2lXzqLU0hM\nIiBwOWFgyw4lsO8keTfnSt8rBQtkrrxQznaW0nK6jj6CDoYpt91RMdCB5+d3bNZ3\nNCtONlRz7wKBgQCqBGqxLzTBjOya3jO0eQ3Mzv6ug0JB0kpatNjpK4c70L4pWxwK\nPHj0TKK+OlR2PoV2rfZTYpUQYMn7aCU13DRC9vlBVOqyC3TY8khxcDtXJdqnXhGm\n+r/pRYqOyKmDl3g0qMyB8Jt4rxyIr8m1tSYJVA4NlXJP9CNzRdhjnVwk6QKBgHXt\nwDv85FdSfPrf6foxiRRrOKHd18mgl91dYz7SomB74uXKfDGiT/iNYZ4LdYAf/lv+\n2wX1HrRdky1/TKXTm8zuGTZuYpWxvjnqaPeaZon+8fQwkW2TKj6Gd6gJooZK4aTp\nYW3DMrJTk7Z7ZaXbQYs6JbLw/qmTs5u23RflcvljAoGBAMWEQw9+FwCfXLRyHW5L\nzdLRa8bqV90ihBH/ZJu0VT9c1jP7oHPHztDSFbKpmDV3wuVPocUe+6DC205OwVH0\n60aEZNnTalNKRbFJTTwAKQw7Pn8y3NNPFhNgrGUVsLznF/kL4TmND+0LYjmNufNL\n1OjyI0eNf1I4CXDfOCkwQNEk\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-605tf@white-collar-tech.iam.gserviceaccount.com",
+  "client_id": "104709710924372868483",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-605tf%40white-collar-tech.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

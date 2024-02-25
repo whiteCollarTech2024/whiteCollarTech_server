@@ -68,6 +68,11 @@ module.exports = () => {
       foreignKey: "userId",
       as: "user",
     });
+
+    Job.hasMany(model.JobApplication, {
+      foreignKey: "id",
+      as: "jobApplications",
+    });
   };
 
   return Job;

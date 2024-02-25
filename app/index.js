@@ -28,6 +28,11 @@ async function startServer() {
 
     registerRoutes(app);
 
+    app.use((err, req, res, next) => {
+      console.error(err.stack);
+      res.status(err.status || 500).send({ message: err.message });
+    });
+
     app.listen(config.port, () => {
       console.log(`Server listening on port ${config.port}`);
     });

@@ -165,7 +165,14 @@ module.exports = {
 
   getAllCareersService: async (serviceInputParams) => {
     try {
-      const jobsData = await JobModel.findAll();
+      const { jobCategory } = serviceInputParams;
+
+      let whereClause = {};
+      if (jobCategory && jobCategory !== "All Positions") {
+        whereClause = { jobCategory };
+      }
+
+      const jobsData = await JobModel.findAll({ where: whereClause });
 
       return {
         status: 200,
@@ -182,7 +189,8 @@ module.exports = {
 
   getJobByIdService: async (serviceInputParams) => {
     try {
-      const { id, userId } = serviceInputParams;
+      const { id, userId, jobCategory } = serviceInputParams;
+
       const whereClause = { userId, id };
       const jobData = await JobModel.findOne(whereClause);
 
