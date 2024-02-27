@@ -21,6 +21,9 @@ async function startServer() {
     // Create database if it doesn't exist
 
     const connectionString = config.database.connectionString;
+    console.log("connectionString", connectionString);
+
+    console.log("config", config);
 
     const client = new pg.Pool({
       connectionString: connectionString,
